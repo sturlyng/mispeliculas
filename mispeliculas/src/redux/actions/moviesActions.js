@@ -10,3 +10,10 @@ export const getEstrenos = () => dispatch => {
         payload: axios.get(`${urlBase}now_playing?api_key=${key}&language=es`)
     })
 }
+
+export const getProximosEstrenos = () => dispatch => {
+    dispatch({
+        type: tipos.GET_PROXIMOS_ESTRENOS,
+        payload: axios.get(`${urlBase}upcoming?api_key=${key}&language=es`)
+    })
+}
