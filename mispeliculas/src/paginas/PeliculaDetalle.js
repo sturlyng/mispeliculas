@@ -1,7 +1,8 @@
 import React from 'react';
-import axios from 'axios';
+import {connect} from 'react-redux'
 import Destaque from '../componentes/Destaque';
 import Cast from '../componentes/Cast';
+import {getCreditos, getPeliculaDetalle} from '../redux/actions/moviesActions'
 
 class PeliculaDetalle extends React.Component {
 
@@ -11,40 +12,26 @@ class PeliculaDetalle extends React.Component {
 
     componentDidMount() {
         const { peliculaid } = this.props.match.params;
-        this.getPeliculaDetalle(peliculaid);
-        this.getCreditos(peliculaid);
-    }
-
-    getPeliculaDetalle = async (peliculaid) => {
-        try {
-            const result = await axios.get(`https://api.themoviedb.org/3/movie/${peliculaid}?api_key=57ce088c0844a8eda6c1e58f3397757c&language=es`);
-            this.setState({
-                pelicula: result.data
-            })
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-
-    getCreditos = async (peliculaid) => {
-        try {
-            const result = await axios.get(`https://api.themoviedb.org/3/movie/${peliculaid}/credits?api_key=57ce088c0844a8eda6c1e58f3397757c&language=es`);
-            this.setState({
-                cast: result.data.cast
-            })
-        } catch (error) {
-            console.log(error.message)
-        }
+        this.props.getPeliculaDetalle(peliculaid);
+        this.props.getCreditos(peliculaid);
     }
 
     render() {
         return (
             <div>
-                <Destaque pelicula={this.state.pelicula}></Destaque>
-                <Cast cast={this.state.cast}></Cast>
+                <Destaque pelicula={this.props.pelicula_detalle.data}></Destaque>
+                <Cast cast={this.props.creditos.data}></Cast>
             </div>
         )
     }
 }
 
-export default PeliculaDetalle;
+function mapStateToProps({creditos, pelicula_detalle}) {
+    return {
+        creditos, pelicula_detalle
+    }
+}
+
+export default connect(mapStateToProps, {
+    getCreditos, getPeliculaDetalle
+})(PeliculaDetalle);
