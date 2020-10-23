@@ -3,30 +3,19 @@ import axios from 'axios';
 import Destaque from '../componentes/Destaque';
 import Estrenos from '../componentes/Estrenos';
 import TituloSeccion from '../componentes/TituloSeccion';
+import {connect} from 'react-redux';
+import {getEstrenos} from '../redux/actions/moviesActions';
 
 class HomePage extends React.Component {
 
     state = {
-        peliculas: [],
         peliculaDestacada: "",
         proximosEstrenos: []
     }
 
     componentDidMount() {
-        this.getData();
+        this.props.getEstrenos();
         this.getProximosEstrenos();
-    }
-
-    getData = async () => {
-        try {
-            const resultados = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=57ce088c0844a8eda6c1e58f3397757c&language=es');
-            this.setPeliculaDestacada(resultados.data.results);
-            this.setState({
-                peliculas: resultados.data.results
-            })
-        } catch (error) {
-            console.log(error.message)
-        }
     }
 
     getProximosEstrenos = async () => {
@@ -40,19 +29,12 @@ class HomePage extends React.Component {
         }
     }
 
-    setPeliculaDestacada(peliculas) {
-        const peliculaDestacada = peliculas[Math.floor(Math.random() * peliculas.length)];
-        this.setState({
-            peliculaDestacada
-        })
-    }
-
     render() {
         return (
             <div>
-                <Destaque pelicula={this.state.peliculaDestacada} />
+                <Destaque pelicula={this.props.estrenos.peliculaDestacada} />
                 <TituloSeccion>Estrenos:</TituloSeccion>
-                <Estrenos peliculas={this.state.peliculas} />
+                <Estrenos peliculas={this.props.estrenos.data} />
                 <TituloSeccion>Próximamente:</TituloSeccion>
                 <Estrenos peliculas={this.state.proximosEstrenos} />
             </div>
@@ -60,4 +42,12 @@ class HomePage extends React.Component {
     }
 }
 
-export default HomePage;
+function mapStateToProps({test, estrenos}) {
+    return {
+        test, estrenos
+    }
+}
+
+export default connect(mapStateToProps, {
+    getEstrenos
+})(HomePage);

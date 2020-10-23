@@ -1,8 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+import reduxThunk from 'redux-thunk';
+import promise from 'redux-promise-middleware';
+import {Provider} from 'react-redux';
+
 import App from './componentes/App';
 import * as serviceWorker from './serviceWorker';
 import { createGlobalStyle } from 'styled-components';
+import reducers from './redux/reducers';
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -10,11 +17,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
+const store = createStore(reducers, {}, applyMiddleware(promise, reduxThunk,logger))
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
     <GlobalStyle />
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 
