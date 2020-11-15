@@ -4,6 +4,7 @@ import estrenos from './estrenosReducer'
 import proximos_estrenos from './proximosEstrenosReducer'
 import creditos from './creditosReducer'
 import pelicula_detalle from './peliculaDetalleReducer'
+import search from './busquedaReducer'
 
 export default combineReducers({
     // test:test ES5-
@@ -11,5 +12,6 @@ export default combineReducers({
     estrenos, 
     proximos_estrenos, 
     creditos, 
-    pelicula_detalle
+    pelicula_detalle, 
+    search
 })

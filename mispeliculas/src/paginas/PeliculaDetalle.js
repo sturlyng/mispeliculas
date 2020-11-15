@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import Destaque from '../componentes/Destaque';
 import Cast from '../componentes/Cast';
 import {getCreditos, getPeliculaDetalle} from '../redux/actions/moviesActions'
+import Header from '../componentes/Header'
 
 class PeliculaDetalle extends React.Component {
 
@@ -19,6 +20,7 @@ class PeliculaDetalle extends React.Component {
     render() {
         return (
             <div>
+                <Header fecha={this.props.test.fecha} />
                 <Destaque pelicula={this.props.pelicula_detalle.data}></Destaque>
                 <Cast cast={this.props.creditos.data}></Cast>
             </div>
@@ -26,9 +28,9 @@ class PeliculaDetalle extends React.Component {
     }
 }
 
-function mapStateToProps({creditos, pelicula_detalle}) {
+function mapStateToProps({creditos, pelicula_detalle, test}) {
     return {
-        creditos, pelicula_detalle
+        creditos, pelicula_detalle, test
     }
 }
 

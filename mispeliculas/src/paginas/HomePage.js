@@ -1,10 +1,11 @@
 import React from 'react';
-import axios from 'axios';
 import Destaque from '../componentes/Destaque';
 import Estrenos from '../componentes/Estrenos';
 import TituloSeccion from '../componentes/TituloSeccion';
-import {connect} from 'react-redux';
-import {getEstrenos, getProximosEstrenos} from '../redux/actions/moviesActions';
+import { connect } from 'react-redux';
+import { getEstrenos, getProximosEstrenos } from '../redux/actions/moviesActions';
+import Header from '../componentes/Header'
+import SearchResults from '../componentes/SearchResults';
 
 class HomePage extends React.Component {
 
@@ -13,22 +14,36 @@ class HomePage extends React.Component {
         this.props.getProximosEstrenos();
     }
 
+    renderResults = () => {
+        const { data } = this.props.search
+        if (data.length === 0) {
+            return (
+                <div>
+                    <Destaque pelicula={this.props.estrenos.peliculaDestacada} />
+                    <TituloSeccion>Estrenos:</TituloSeccion>
+                    <Estrenos peliculas={this.props.estrenos.data} />
+                    <TituloSeccion>Próximamente:</TituloSeccion>
+                    <Estrenos peliculas={this.props.proximos_estrenos.data} />
+                </div>
+            )
+        } else {
+            return <SearchResults data={data} />
+        }
+    }
+
     render() {
         return (
             <div>
-                <Destaque pelicula={this.props.estrenos.peliculaDestacada} />
-                <TituloSeccion>Estrenos:</TituloSeccion>
-                <Estrenos peliculas={this.props.estrenos.data} />
-                <TituloSeccion>Próximamente:</TituloSeccion>
-                <Estrenos peliculas={this.props.proximos_estrenos.data} />
+                <Header path={this.props.match.path} />
+                {this.renderResults()}
             </div>
         );
     }
 }
 
-function mapStateToProps({test, estrenos, proximos_estrenos}) {
+function mapStateToProps({ estrenos, proximos_estrenos, search }) {
     return {
-        test, estrenos, proximos_estrenos
+        estrenos, proximos_estrenos, search
     }
 }
 

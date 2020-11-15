@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import {updateFecha} from '../redux/actions/testActions';
 import HomePage from '../paginas/HomePage';
 import PeliculaDetalle from '../paginas/PeliculaDetalle';
-import Header from './Header';
 import Footer from './Footer';
 
 class App extends Component {
@@ -18,7 +17,6 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Header fecha={this.props.test.fecha} />
           <Route exact path="/" component={HomePage} />
           <Route path="/detalles/:peliculaid" component={PeliculaDetalle} />
           <Footer />
